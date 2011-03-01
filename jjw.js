@@ -6,7 +6,7 @@ module.exports = function() {
     , cb = args.pop()
     , actions
     
-  var w = new Worker('./worker.js')
+  var w = new Worker(__dirname + '/worker.js')
   
   if (args.length === 1) {
     if (Array.isArray(args[0])) actions = args[0]

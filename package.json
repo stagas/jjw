@@ -1,0 +1,21 @@
+{
+  "name": "jjw",
+  "description": "jsdom + jquery using workers for async scraping",
+  "version": "0.0.1",
+  "author": "George Stagas <gstagas@gmail.com>",
+  "engines": {
+    "node": ">=0.4.0"
+  },
+  "dependencies" : {
+    "worker": ">=0.2.1",
+    "jsdom": ">=0.1.20"
+  },
+  "main": "./jjw",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stagas/jjw"
+  },
+  "bugs": {
+    "web": "https://github.com/stagas/jjw/issues"
+  }
+}
