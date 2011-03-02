@@ -7,7 +7,7 @@ worker.onmessage = function(msg) {
     actions.push(eval('(' + action + ')'))
   })
   jsdom.env(msg.body, [ __dirname + '/jquery.js' ], function(err, window) {
-    if (err) throw err
+    if (err) return worker.postMessage({ error: err[0] })
     var result
     actions.forEach(function(action) {
       result = action(window.jQuery)

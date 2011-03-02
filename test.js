@@ -52,9 +52,10 @@ jjw('http://www.flickr.com/search/?q=homer+simpson'
   ]
   
 , function(err, res) {
-  if (err) throw err
-  console.log(res)
-})
+    if (err) throw err
+    console.log(res)
+  }
+)
 
 // or pass many functions as arguments -- returns an array of results
 jjw('http://www.flickr.com/search/?q=homer+simpson'
@@ -76,13 +77,13 @@ jjw('http://www.flickr.com/search/?q=homer+simpson'
   }
 , function($) {
     return $('.Results').text()
-
   }
-
+  
 , function(err, res) {
     if (err) throw err
     console.log(res)
-})
+  }
+)
 
 // give it a body string -- one function will return just the result
 jjw('<div class="so">cool</div>', function($) { return $('.so').text() }, function(err, res) {

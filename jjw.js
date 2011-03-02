@@ -24,6 +24,10 @@ module.exports = function() {
     , counter = actions.length
 
   w.onmessage = function(msg) {
+    if (typeof msg === 'object' && msg.error) {
+      w.terminate()
+      return cb(msg.error)
+    }
     results.push(msg)
     if (!--counter) {
       w.terminate()
