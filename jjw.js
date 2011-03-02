@@ -9,7 +9,7 @@ module.exports = function() {
     
   var w = new Worker(__dirname + '/worker.js')
 
-  if (Array.isArray(args[0])) actions = args[0]
+  if (Array.isArray(args[0])) actions = args[0].map(function(item) { return item.toString() })
   else {
     if (typeof args[0] === 'object') {
       actions = []
