@@ -5,14 +5,21 @@ module.exports = function() {
     , body = args.shift()
     , cb = args.pop()
     , actions
+    , keys
     
   var w = new Worker(__dirname + '/worker.js')
-  
-  if (args.length === 1) {
-    if (Array.isArray(args[0])) actions = args[0]
-    else actions = [ args[0] ]
-  } else actions = args
 
+  if (Array.isArray(args[0])) actions = args[0]
+  else {
+    if (typeof args[0] === 'object') {
+      actions = []
+      keys = Object.keys(args[0])
+      keys.forEach(function(key) {
+        actions.push(args[0][key].toString())
+      })
+    } else actions = args.map(function(item) { return item.toString() })
+  }
+  
   var results = []
     , counter = actions.length
 
@@ -20,7 +27,13 @@ module.exports = function() {
     results.push(msg)
     if (!--counter) {
       w.terminate()
-      if (results.length === 1) results = results[0]
+      if (keys) {
+        var ret = {}
+        for (var i = 0, len = keys.length; i < len; i++) {
+          ret[keys[i]] = results[i]
+        }
+        results = ret
+      } else if (results.length === 1) results = results[0]
       cb(null, results)
     }
   }
@@ -29,6 +42,9 @@ module.exports = function() {
     w.terminate()
     cb(err)
   }
-  
-  w.postMessage({ body: body, actions: actions.map(function(item) { return item.toString() }) })
+
+  w.postMessage({ 
+    body: body
+  , actions: actions
+  })
 }

@@ -2,15 +2,17 @@ var worker = require('worker').worker
   , jsdom = require('jsdom')
 
 worker.onmessage = function(msg) {
-  var window = jsdom.jsdom().createWindow()
-    , actions = []
+  var actions = []
   msg.actions.forEach(function(action) {
     actions.push(eval('(' + action + ')'))
   })
-  jsdom.jQueryify(window, __dirname + '/jquery.js', function(win, $) {
-    $('body').html(msg.body)
+  jsdom.env(msg.body, [ __dirname + '/jquery.js' ], function(err, window) {
+    if (err) throw err
+    var result
     actions.forEach(function(action) {
-      worker.postMessage(action($))
+      result = action(window.jQuery)
+      if (result == null) result = '' // == null catches null and undefined
+      worker.postMessage(result)
     })
   })
 }
